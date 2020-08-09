@@ -1,6 +1,7 @@
 import React from "react";
 
 function SearchInput(props) {
+  // console.log({props});
   return (
     <form>
       <div className="form-group">

@@ -7,22 +7,28 @@ import UserInfo from "./UserInfo";
 
 class DirectoryContainer extends Component {
   state = {
-    result: {},
+    result: [],
     search: "",
   };
 
-  searchUser = (query) => {
-    API.search(query)
-      .then((res) => this.setState({ result: res.data }))
+  searchUser = () => {
+    API.search()
+      .then((res) => {
+        // console.log(res.data.results);
+        this.setState({ result: res.data.results });
+      })
       .catch((err) => console.log(err));
   };
 
   componentDidMount() {
-    this.searchUser("John");
+    // this.searchUser("John");
+    this.searchUser();
   }
 
   handleInputChange = (event) => {
-    const user = this.target.value;
+    event.preventDefault()
+    console.log({ event });
+    // const user = event.target.value;
   };
 
   handleSubmit = (event) => {
@@ -31,25 +37,34 @@ class DirectoryContainer extends Component {
   };
 
   render() {
-    // layered html via components
+    // layered html via components - needs ternary operator needed
+    // state ? !prop.state.result :
     return (
       <Container>
         <SearchInput
           value={this.state.search}
           handleInputChange={this.handleInputChange}
           handleSubmit={this.handleSubmit}
+          onChange={(event) => this.setState({ search: event.target.value })}
         />
-        <UserCard />
-        <UserInfo
-          firstName={this.state.result.name.first}
-          lastName={this.state.result.name.last}
-          city={this.state.result.location.city}
-          state={this.state.result.location.city}
-          country={this.state.result.location.city}
-          email={this.state.result.email}
-          age={this.state.result.age}
-          img={this.state.result.picture.thumbnail}
-        />
+
+        {this.state.result.map((user) => {
+          // console.log(user);
+          return (
+            <UserCard>
+              <UserInfo
+                firstName={user.name.first}
+                lastName={user.name.last}
+                city={user.location.city}
+                state={user.location.city}
+                country={user.location.city}
+                email={user.email}
+                age={parseInt(user.dob.age)}
+                img={user.picture.thumbnail}
+              />
+            </UserCard>
+          );
+        })}
       </Container>
     );
   }
