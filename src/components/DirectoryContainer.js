@@ -27,6 +27,10 @@ class DirectoryContainer extends Component {
   handleInputChange = (event) => {
     event.preventDefault();
     // console.log({ event });
+    
+        const { value, name } = event.target;
+        console.log(name,value)
+        this.setState({ [name]: value });
 
     // const filterUser = this.state.result.filter((user) => {
       // console.log({ user });
@@ -40,9 +44,6 @@ class DirectoryContainer extends Component {
     // });
     // console.log(filterUser);
 
-
-    const { value, name } = event.target;
-    this.setState({ [name]: value });
   };
 
   handleSubmit = (event) => {
