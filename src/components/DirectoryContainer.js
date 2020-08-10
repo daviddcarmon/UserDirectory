@@ -14,7 +14,6 @@ class DirectoryContainer extends Component {
   searchUser = () => {
     API.search()
       .then((res) => {
-        // console.log(res.data.results);
         this.setState({ result: res.data.results });
       })
       .catch((err) => console.log(err));
@@ -26,19 +25,33 @@ class DirectoryContainer extends Component {
   }
 
   handleInputChange = (event) => {
-    event.preventDefault()
-    console.log({ event });
-    // const user = event.target.value;
+    event.preventDefault();
+    // console.log({ event });
+
+    // const filterUser = this.state.result.filter((user) => {
+      // console.log({ user });
+      // if (event.target.value !== "") {
+        
+      // }
+      // // if(user.name.first !== this.state.search)
+      // const userLower = user.name.f.toLowerCase()
+      // const filtered = event.target.value.toLowerCase()
+      // return userLower.includes(filtered)
+    // });
+    // console.log(filterUser);
+
+
+    const { value, name } = event.target;
+    this.setState({ [name]: value });
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.searchUser(this.setState.search);
+    this.searchUser(this.state.search);
   };
 
   render() {
-    // layered html via components - needs ternary operator needed
-    // state ? !prop.state.result :
+    // layered html via components - ternary operator needed?
     return (
       <Container>
         <SearchInput
@@ -48,19 +61,20 @@ class DirectoryContainer extends Component {
           onChange={(event) => this.setState({ search: event.target.value })}
         />
 
-        {this.state.result.map((user) => {
-          // console.log(user);
+        {this.state.result.map((user, index) => {
+          // console.log(user,index);
           return (
             <UserCard>
               <UserInfo
                 firstName={user.name.first}
                 lastName={user.name.last}
                 city={user.location.city}
-                state={user.location.city}
-                country={user.location.city}
+                state={user.location.state}
+                country={user.location.country}
                 email={user.email}
                 age={parseInt(user.dob.age)}
-                img={user.picture.thumbnail}
+                img={user.picture.large}
+                keys={index}
               />
             </UserCard>
           );

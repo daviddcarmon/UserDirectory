@@ -1,7 +1,7 @@
 import axios from "axios";
 const URL = "https://randomuser.me/api/";
 const APIKEY = "?key=89K6-65ZL-EOEI-KFDQ";
-const URLPARAMS = "&results=25&seed=huskiesarecute&page=3";
+const URLPARAMS = "&results=200&seed=huskiesarecute&page=3";
 const queryUrl = URL + APIKEY + URLPARAMS;
 
 
