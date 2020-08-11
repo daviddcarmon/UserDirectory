@@ -27,28 +27,28 @@ class DirectoryContainer extends Component {
   handleInputChange = (event) => {
     event.preventDefault();
     // console.log({ event });
-    
-        const { value, name } = event.target;
-        console.log(name,value)
-        this.setState({ [name]: value });
+
+    const { value, name } = event.target;
+    console.log(name, value);
+    this.setState({ [name]: value });
 
     // const filterUser = this.state.result.filter((user) => {
-      // console.log({ user });
-      // if (event.target.value !== "") {
-        
-      // }
-      // // if(user.name.first !== this.state.search)
-      // const userLower = user.name.f.toLowerCase()
-      // const filtered = event.target.value.toLowerCase()
-      // return userLower.includes(filtered)
+    // console.log({ user });
+    // if (event.target.value !== "") {
+
+    // }
+    // // if(user.name.first !== this.state.search)
+    // const userLower = user.name.f.toLowerCase()
+    // const filtered = event.target.value.toLowerCase()
+    // return userLower.includes(filtered)
     // });
     // console.log(filterUser);
-
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.searchUser(this.state.search);
+    const sortResults = [...this.state.result];
+    this.setState({ result: sortResults });
   };
 
   render() {
@@ -59,27 +59,32 @@ class DirectoryContainer extends Component {
           value={this.state.search}
           handleInputChange={this.handleInputChange}
           handleSubmit={this.handleSubmit}
-          onChange={(event) => this.setState({ search: event.target.value })}
         />
 
-        {this.state.result.map((user, index) => {
-          // console.log(user,index);
-          return (
-            <UserCard>
-              <UserInfo
-                firstName={user.name.first}
-                lastName={user.name.last}
-                city={user.location.city}
-                state={user.location.state}
-                country={user.location.country}
-                email={user.email}
-                age={parseInt(user.dob.age)}
-                img={user.picture.large}
-                keys={index}
-              />
-            </UserCard>
-          );
-        })}
+        {this.state.result
+          .filter((user) => {
+            return `${user.name.first} ${user.name.last}`
+              .toLowerCase()
+              .includes(this.state.search.toLowerCase());
+          })
+          .map((user, index) => {
+            // console.log(user,index);
+            return (
+              <UserCard>
+                <UserInfo
+                  firstName={user.name.first}
+                  lastName={user.name.last}
+                  city={user.location.city}
+                  state={user.location.state}
+                  country={user.location.country}
+                  email={user.email}
+                  age={parseInt(user.dob.age)}
+                  img={user.picture.large}
+                  keys={index}
+                />
+              </UserCard>
+            );
+          })}
       </Container>
     );
   }
