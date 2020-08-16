@@ -4,11 +4,13 @@ import Container from "./Container";
 import SearchInput from "./SearchInput";
 import UserCard from "./UserCard";
 import UserInfo from "./UserInfo";
+import { renderIntoDocument } from "react-dom/test-utils";
 
 class DirectoryContainer extends Component {
   state = {
     result: [],
     search: "",
+    sortType: "asc",
   };
 
   searchUser = () => {
@@ -31,37 +33,43 @@ class DirectoryContainer extends Component {
     const { value, name } = event.target;
     console.log(name, value);
     this.setState({ [name]: value });
-
-    // const filterUser = this.state.result.filter((user) => {
-    // console.log({ user });
-    // if (event.target.value !== "") {
-
-    // }
-    // // if(user.name.first !== this.state.search)
-    // const userLower = user.name.f.toLowerCase()
-    // const filtered = event.target.value.toLowerCase()
-    // return userLower.includes(filtered)
-    // });
-    // console.log(filterUser);
   };
 
-  handleSubmit = (event) => {
+  handleSortAsc = (event) => {
     event.preventDefault();
-    const sortResults = [...this.state.result];
-    this.setState({ result: sortResults });
+    const { name, value } = event.target;
+    console.log(event.target);
+
+    this.setState({ [name]: value });
+  };
+
+  handleSortDec = (event) => {
+    event.preventDefault();
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
   };
 
   render() {
     // layered html via components - ternary operator needed?
+
+    const { result, sortType } = this.state;
+    const sortResults = [...this.state.result];
+    sortResults.sort((a, b) => {
+      const sorted = sortType === "asc" ? 1 : -1;
+      return sorted * a.name.first.localeCompare(b.name.first);
+    });
+    // console.log(sortResults);
+
     return (
       <Container>
         <SearchInput
           value={this.state.search}
           handleInputChange={this.handleInputChange}
-          handleSubmit={this.handleSubmit}
+          handleSortAsc={this.handleSortAsc}
+          handleSortDec={this.handleSortDec}
         />
 
-        {this.state.result
+        {sortResults
           .filter((user) => {
             return `${user.name.first} ${user.name.last}`
               .toLowerCase()
@@ -81,6 +89,7 @@ class DirectoryContainer extends Component {
                   age={parseInt(user.dob.age)}
                   img={user.picture.large}
                   keys={index}
+                  sortType={this.sortType}
                 />
               </UserCard>
             );

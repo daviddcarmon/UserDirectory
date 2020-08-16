@@ -16,8 +16,11 @@ function SearchInput(props) {
           id="search"
         />
         <br />
-        <button onClick={props.handleSubmit} className="btn btn-primary">
-          Search
+        <button onClick={props.handleSortAsc} className="btn btn-primary" name="sortType" value="asc">
+          Sort Name by Ascending
+        </button> { }
+        <button onClick={props.handleSortAsc} className="btn btn-primary" name="sortType" value="dec">
+          Sort Name by Descending
         </button>
       </div>
     </form>
